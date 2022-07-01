@@ -12,9 +12,10 @@ namespace WhereClause.Functions.Builtin
                 throw new Exception($"Function {nameof(In)} require two operands.");
             if (operands.Count != 2)
                 throw new Exception($"Function {nameof(In)} requires two operands.");
-            return CollectionUtils.In(operands[0], operands[1]); 
+            var t = this.CastOperandAsArrayT2(operands);
+            return CollectionUtils.In(t.Item1, t.Item2);
         }
     }
-    
+
 }
 

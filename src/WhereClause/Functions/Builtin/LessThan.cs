@@ -3,20 +3,15 @@ using System;
 
 namespace WhereClause.Functions.Builtin
 {
-    [Function("<","lt","lessThan")]
+    [Function("<", "lt", "lessThan")]
     public class LessThan : IFunction
     {
         public bool Eval(List<object> operands)
         {
-            if (operands == null)
-                throw new Exception($"Function {nameof(LessThan)} require two operands.");
-            if (operands.Count != 2)
-                throw new Exception($"Function {nameof(LessThan)} requires two operands.");
-
-            return Compare.CompareObjects(operands[0], operands[1]) < 0;
+            this.CheckOperandCount(2, operands);
+            var t = this.CastOperandT2(operands);
+            return Compare.CompareObjects(t.Item1, t.Item2) < 0;
         }
-
-        
     }
 
 }

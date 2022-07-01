@@ -5,14 +5,8 @@ namespace WhereClause.Functions
 {
     public interface IFunctionFactory
     {
-        IFunctionGroup GetFunctionGroup(string name);
-    }
-
-    public interface IFunctionGroup:IDictionary<Type,IFunctionActivator>
-    {
-         string Name { get; set; }
-
-         int OperandCount { get; set; }
+        void Register(string name, Type functionType, Type operandType);
+        IFunction Resolve(string name, Type operandType);
     }
 }
 

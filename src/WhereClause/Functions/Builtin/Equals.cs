@@ -8,12 +8,12 @@ namespace WhereClause.Functions.Builtin
     {
         public bool Eval(List<object> operands)
         {
-            if(operands == null)
+            if (operands == null)
                 throw new Exception($"Function {nameof(Equals)} require two operands.");
             if (operands.Count != 2)
                 throw new Exception($"Function {nameof(Equals)} requires two operands.");
-
-            return Compare.CompareObjects(operands[0], operands[1]) == 0;
+            var t = this.CastOperandT2(operands);
+            return Compare.CompareObjects(t.Item1, t.Item2) == 0;
         }
     }
 

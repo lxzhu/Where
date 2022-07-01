@@ -8,9 +8,11 @@
     <None Remove="Naive\Expr\" />
     <None Remove="Expressions\" />
     <None Remove="Functions\" />
+    <None Remove="Compiler\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />
     <Folder Include="Functions\" />
+    <Folder Include="Compiler\" />
   </ItemGroup>
 </Project>

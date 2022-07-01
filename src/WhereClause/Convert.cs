@@ -5,9 +5,9 @@ using System.Linq;
 namespace WhereClause
 {
     public class Convert
-	{
+    {
         public static readonly Dictionary<Type, IConverter> Converters;
-			
+
         static Convert()
         {
             Converters = new Dictionary<Type, IConverter>();
@@ -42,23 +42,40 @@ namespace WhereClause
 
         public static void RegisterConverter<T>(Func<string, T> converter)
         {
-            Converters[typeof(T)] = new FuncConverter((input)=>converter(input));
+            Converters[typeof(T)] = new FuncConverter((input) => converter(input));
         }
 
         public static void RegisterConverter(Type type, Func<string, object> converter)
         {
-			Converters[type] = new FuncConverter(converter);
+            Converters[type] = new FuncConverter((input) =>
+            {
+                try
+                {
+                    return converter(input);
+                }
+                catch (Exception ex)
+                {
+                    var message = $"Can not convert '{input}' to {type.Name}";
+                    throw new Exception(message, ex);
+                }
+            });
         }
 
-		public static object ConvertText(string input, Type type)
+        public static object ConvertText(object input, Type type)
+        {
+            if (input.GetType() == type) return input;
+            return ConvertText(input.ToString(), type);
+        }
+        public static object ConvertText(string input, Type type)
         {
             if (!Converters.ContainsKey(type))
             {
                 throw new Exception($"Converter from string to {type.Name} is not registered.");
             }
+
             var converter = Converters[type];
             return converter.Convert(input);
         }
-	}
+    }
 }
 
