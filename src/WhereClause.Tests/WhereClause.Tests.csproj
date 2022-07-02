@@ -26,5 +26,9 @@
   <ItemGroup>
     <None Remove="FluentAssertions" />
     <None Remove="Moq" />
+    <None Remove="FunctionExpressionTests\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ExpressionTests\" />
   </ItemGroup>
 </Project>

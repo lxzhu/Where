@@ -2,7 +2,7 @@
 {
     public interface IAttributeReader
     { 
-        Attribute Read(string attribute);
+        Attribute Read(string attributeName);
     }
 }
 

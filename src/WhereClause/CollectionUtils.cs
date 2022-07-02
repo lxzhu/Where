@@ -9,28 +9,7 @@ namespace WhereClause
 {
     public class CollectionUtils
     {
-        /// <summary>
-        /// to match "[]"," [ ] "
-        /// </summary>
-        public static readonly Regex ArrayTextRegex
-                = new Regex(@"^\s*\[\s*([^\]]+(,[^\]])*)?\s*\]\s*$");
-        public static bool IsArrayText(string input)
-        {
-            if (string.IsNullOrWhiteSpace(input)) return false;
-            return ArrayTextRegex.IsMatch(input);
-        }
-        /// <summary>
-        /// TODO:
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public static IEnumerable<string> ParseArrayText(string input)
-        {
-            input = input.TrimStart("[".ToCharArray());
-            input = input.TrimEnd("]".ToCharArray());
-            return input.Split(",".ToCharArray())
-            .Select(x => x.Trim());
-        }
+
         public static bool Contains(object a, object b)
         {
             if (a is null) return false;

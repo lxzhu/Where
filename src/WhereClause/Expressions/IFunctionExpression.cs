@@ -2,7 +2,7 @@
 
 namespace WhereClause.Expressions
 {
-    public interface IFunctionExpression
+    public interface IFunctionExpression:IExpression
     {
         List<string> OperandTexts { get; set; }
     }

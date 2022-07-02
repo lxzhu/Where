@@ -6,39 +6,65 @@ namespace WhereClause.Expressions
 {
     public class FunctionExpression : IFunctionExpression
     {
+        public string FunctionName { get; set; } = string.Empty;
+        
         public List<string> OperandTexts { get; set; } = new List<string>();
-
-        protected List<object> Operands { get; set; }
 
         protected IExpressionContext Context { get; set; }
 
         public FunctionExpression() { }
-        public FunctionExpression(params string[] operands)
+        
+        public FunctionExpression(
+            string functionName,
+            params string[] operands)
         {
+            this.FunctionName = functionName;
             if (operands != null)
                 this.OperandTexts.AddRange(operands);
         }
 
-        public bool Eval(IExpressionContext context)
+        public static FunctionExpression Svo(
+            string subject,
+            string function,
+            params object[] values)
+        {
+            if (values == null)
+                values = new object[] { };
+            var operands = values
+                .Select(x => x!=null?x.ToString():(string)null)
+                .ToList();
+            operands.Insert(0, subject);
+            return new FunctionExpression(function,operands.ToArray());
+        }
+
+        public virtual bool Eval(IExpressionContext context)
         {
             this.Context = context;
-            var functionName = this.OperandTexts[0];
-            var attributeName = this.OperandTexts[1];
-            var otherOperands = this.OperandTexts
-                .Skip(2).ToList();
 
-            var attribute = this.Context.Attributes.Read(attributeName);
-            if (attribute is null)
+            var attributes = this.OperandTexts.Select(x =>
             {
-                throw new System.Exception($"Fail to solve attribute {attributeName}");
-            }
+                Attribute attribute = null;
+                
+                if (x.StartsWith("$"))
+                { 
+                    attribute=this.Context.Attributes.Read(x);
+                }
+                else
+                {
+                    var literal = x;
+                    if (x.StartsWith("\\$"))
+                        literal = x.Substring(1);
+                    attribute = this.Context.Literals.Guess(literal);
+                }
+                return attribute ?? new Attribute(x, x);
+            }).ToList();
 
+            var firstAttributeType = attributes.Select(x => x.Type)
+                .FirstOrDefault();
             var function = this.Context.Functions.Resolve(
-                functionName, attribute.Type);
+                this.FunctionName, firstAttributeType ?? typeof(AnyType));
 
-            var arguments = new List<object>() { attribute.Value };
-            arguments.AddRange(otherOperands);
-
+            var arguments = attributes.Select(x => x.Value).ToList();
             return function.Eval(arguments);
         }
     }

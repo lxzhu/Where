@@ -42,7 +42,7 @@ namespace WhereClause.Functions.Builtin
             this IFunction func, List<object> operands)
         {
             var a = operands[0];
-            var b1 = CollectionUtils.ParseArrayText(operands[1] as string);
+            var b1 = ArrayUtils.ParseArrayText(operands[1] as string);
             var b2 = b1.Select(x => Convert.ConvertText(x, a.GetType()))
                 .ToArray();
             return new Tuple<object, object>(a, b2);

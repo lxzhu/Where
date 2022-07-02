@@ -9,10 +9,12 @@
     <None Remove="Expressions\" />
     <None Remove="Functions\" />
     <None Remove="Compiler\" />
+    <None Remove="AttributeReaders\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Expressions\" />
     <Folder Include="Functions\" />
     <Folder Include="Compiler\" />
+    <Folder Include="AttributeReaders\" />
   </ItemGroup>
 </Project>

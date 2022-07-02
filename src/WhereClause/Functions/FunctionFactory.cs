@@ -11,7 +11,7 @@ namespace WhereClause.Functions
                  = new Dictionary<string, FunctionGroup>();
         public FunctionFactory() { }
 
-        public void RegisterBuiltinFunctions()
+        public void RegisterBuiltin()
         {
             this.Register<IsNull, AnyType>();
             this.Register<Equals, AnyType>();
@@ -20,6 +20,7 @@ namespace WhereClause.Functions
             this.Register<Contains, AnyType[]>();
             this.Register<StringContains, string>();
             this.Register<In, AnyType>();
+            this.Register<RegexMatch, string>();
         }
 
         #region RegisterFunction
